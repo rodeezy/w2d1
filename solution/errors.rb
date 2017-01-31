@@ -1,0 +1,3 @@
+class FlippedTwiceError < StandardError
+  
+end

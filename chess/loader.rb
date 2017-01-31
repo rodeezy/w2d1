@@ -1,0 +1,7 @@
+load 'board.rb'
+load 'pawn.rb'
+load 'king.rb'
+load 'bishop.rb'
+load 'rook.rb'
+load 'piece.rb'
+load 'display.rb'
