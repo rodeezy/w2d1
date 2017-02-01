@@ -6,6 +6,7 @@ require_relative "knight"
 require_relative "queen"
 require_relative "bishop"
 require_relative "king"
+require "byebug"
 
 class Board
   attr_reader :grid
@@ -28,15 +29,43 @@ class Board
     @grid.flatten.each do |piece|
       if piece.color == other_color && piece.moves.include?(king_pos)
         begin
-          puts "REACHES BEGIN".colorize(:red)
           piece.valid?(king_pos)
           return true
         rescue
-          next
         end
       end
     end
     false
+  end
+
+  # def board_dup(arr)
+  #
+  #   return arr.dup if arr.none? { |el| el.is_a?(Array)}
+  #   arr.map do |el|
+  #     if el.is_a?(Array)
+  #       board_dup(el)
+  #     else
+  #       el.dup
+  #     end
+  #   end
+  # end
+
+  def board_dup
+    a = Board.new
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |piece, j|
+        a[i,j] = piece.class.new(piece.name,a,[i,j],piece.color)
+      end
+    end
+    a
+  end
+
+  def check_mate?(color)
+    return false unless in_check?(color)
+    @grid.flatten.each do |piece|
+      return false unless piece.valid_moves.empty?
+    end
+    true
   end
 
   def [](pos)
