@@ -1,6 +1,6 @@
 require 'colorize'
 class Piece
-  attr_reader :name
+  attr_reader :name, :pos
   def initialize(name, board, pos, color)
     @name = name
     @board = board

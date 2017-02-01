@@ -22,6 +22,23 @@ class Board
     end
   end
 
+  def in_check?(color)
+    king_pos = @kings[color].pos
+    other_color = color == :white ? :black : :white
+    @grid.flatten.each do |piece|
+      if piece.color == other_color && piece.moves.include?(king_pos)
+        begin
+          puts "REACHES BEGIN".colorize(:red)
+          piece.valid?(king_pos)
+          return true
+        rescue
+          next
+        end
+      end
+    end
+    false
+  end
+
   def [](pos)
     x, y = pos
     @grid[x][y]
@@ -37,14 +54,21 @@ class Board
   end
 
   def setup
+    @kings = {}
     # setup_pieces((0..1))
     # setup_pieces((6..7))
     @grid[2..5].each_with_index do |row, i|
       row.each_index { |j| row[j] = NullPiece.instance }
     end
-    @grid[1].each_index { |j| @grid[1][j] = Pawn.new('P', self, [1,j], :black ) }
+    #TODO put back in after debugging
 
-    @grid[6].each_index { |j| @grid[6][j] = Pawn.new('P', self, [6,j], :white ) }
+    #@grid[1].each_index { |j| @grid[1][j] = Pawn.new('P', self, [1,j], :black ) }
+
+    #@grid[6].each_index { |j| @grid[6][j] = Pawn.new('P', self, [6,j], :white ) }
+
+    @grid[1].each_index { |j| @grid[1][j] = NullPiece.instance }
+
+    @grid[6].each_index { |j| @grid[6][j] = NullPiece.instance }
 
     @grid[0].each_index do |i|
       if i == 0 || i == 7
@@ -57,6 +81,7 @@ class Board
         @grid[0][i] = Queen.new("Q", self, [0, i], :black)
       elsif i == 4
         @grid[0][i] = King.new("K", self, [0, i], :black)
+        @kings[:black] = @grid[0][i]
       end
     end
 
@@ -71,6 +96,7 @@ class Board
         @grid[7][i] = Queen.new("Q", self, [7, i], :white)
       elsif i == 4
         @grid[7][i] = King.new("K", self, [7, i], :white)
+        @kings[:white] = @grid[7][i]
       end
     end
     # @grid[6].each_with_index do |row, i|
