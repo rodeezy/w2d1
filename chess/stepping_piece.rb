@@ -7,4 +7,8 @@ module SteppingPiece
     end
     result
   end
+
+  def valid?(end_pos)
+    raise "Invalid move" if @board[end_pos].color == @color
+  end
 end

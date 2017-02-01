@@ -1,3 +1,4 @@
+require 'colorize'
 class Piece
   attr_reader :name
   def initialize(name, board, pos, color)
@@ -5,19 +6,24 @@ class Piece
     @board = board
     @pos = pos
     @color = color
+    @selected = false
   end
 
   def to_s
     #figure out making it a square
-    @name + " "
+    "#{@name} ".colorize(:color => color, :background => :yellow)
   end
 
   def color
-    @color
+    @selected ? :red : @color
   end
 
   def moves
 
+  end
+
+  def toggle_select
+    @selected = !@selected
   end
 
 end

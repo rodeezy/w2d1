@@ -1,5 +1,11 @@
 require_relative "piece"
 require_relative "null_piece"
+require_relative "rook"
+require_relative "pawn"
+require_relative "knight"
+require_relative "queen"
+require_relative "bishop"
+require_relative "king"
 
 class Board
   attr_reader :grid
@@ -36,12 +42,40 @@ class Board
     @grid[2..5].each_with_index do |row, i|
       row.each_index { |j| row[j] = NullPiece.instance }
     end
-    @grid[0..1].each_with_index do |row, i|
-      row.each_index { |j| row[j] = Piece.new('P', [i, j], self ) }
+    @grid[1].each_index { |j| @grid[1][j] = Pawn.new('P', self, [1,j], :black ) }
+
+    @grid[6].each_index { |j| @grid[6][j] = Pawn.new('P', self, [6,j], :white ) }
+
+    @grid[0].each_index do |i|
+      if i == 0 || i == 7
+        @grid[0][i] = Rook.new("R", self, [0, i], :black)
+      elsif i == 1 || i == 6
+        @grid[0][i] = Knight.new("N", self, [0, i], :black)
+      elsif i == 2 || i == 5
+        @grid[0][i] = Bishop.new("B", self, [0, i], :black)
+      elsif i == 3
+        @grid[0][i] = Queen.new("Q", self, [0, i], :black)
+      elsif i == 4
+        @grid[0][i] = King.new("K", self, [0, i], :black)
+      end
     end
-    @grid[6..7].each_with_index do |row, i|
-      row.each_index { |j| row[j] = Piece.new('P', [i, j], self) }
+
+    @grid[7].each_index do |i|
+      if i == 0 || i == 7
+        @grid[7][i] = Rook.new("R", self, [7, i], :white)
+      elsif i == 1 || i == 6
+        @grid[7][i] = Knight.new("N", self, [7, i], :white)
+      elsif i == 2 || i == 5
+        @grid[7][i] = Bishop.new("B", self, [7, i], :white)
+      elsif i == 3
+        @grid[7][i] = Queen.new("Q", self, [7, i], :white)
+      elsif i == 4
+        @grid[7][i] = King.new("K", self, [7, i], :white)
+      end
     end
+    # @grid[6].each_with_index do |row, i|
+    #   row.each_index { |j| row[j] = Pawn.new('P', self, [i, j], :white) }
+    # end
 
   end
 
